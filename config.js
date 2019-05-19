@@ -11,7 +11,7 @@ nconf
   // 2. Environment variables
   .env(["NODE_ENV", "PORT"])
   // 3. Config file
-  .file({ file: path.join(__dirname, "config.json") })
+  .file({ file: path.join(__dirname, "config/config.json") })
   // 4. Defaults
   .defaults({
     PORT: 8080

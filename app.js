@@ -3,8 +3,6 @@
 const path = require("path");
 const express = require("express");
 
-const { runSearch } = require("./lib/search");
-const { runScrape } = require("./lib/scrape");
 const config = require("./config");
 
 const app = express();

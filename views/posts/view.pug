@@ -1,0 +1,23 @@
+
+extends ../base.pug
+
+block content
+  h3 Post
+    small
+
+  .btn-group
+    a(href=`/posts/${post.id}/edit`, class='btn btn-primary btn-sm')
+      i.fas.fa-edit
+      span  Edit post
+    a(href=`/posts/${post.id}/delete`, class='btn btn-danger btn-sm')
+      i.fas.fa-trash
+      span  Delete post
+
+  .media
+    img(src=post.imageUrl || 'http://placekitten.com/g/128/192' class="mr-3")
+    .media-body
+      h4.mt-0= post.title
+        | &nbsp;
+        small= post.publishedDate
+      h5 By #{post.author||'unknown'}
+      p= post.description

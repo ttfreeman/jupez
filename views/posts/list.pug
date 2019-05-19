@@ -1,0 +1,25 @@
+
+extends ../base.pug
+
+block content
+  h3 Posts
+
+  a(href="/posts/add", class='btn btn-success btn-sm')
+    i.fas.fa-plus
+    span  Add post
+
+  each post in posts
+    a(href=`/posts/${post.id}` class="card" style={width: '18rem'})
+      img(src=post.imageUrl, alt="http://placekitten.com/g/128/192" class="card-img-top")
+      .card-body
+        h5= post.title
+        p= post.author
+
+  if !posts.length
+    p No posts found.
+
+  if nextPageToken
+    nav
+      ul.pagination
+        li.page-item
+          a(href=`?pageToken=${encodeURIComponent(nextPageToken)}`) More

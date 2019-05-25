@@ -3,17 +3,27 @@ extends ../base.pug
 
 block content
   h3 Posts
-
   a(href="/posts/add", class='btn btn-success btn-sm')
     i.fas.fa-plus
     span  Add post
-
-  each post in posts
-    a(href=`/posts/${post.id}` class="card" style={width: '18rem'})
-      img(src=post.imageUrl, alt="http://placekitten.com/g/128/192" class="card-img-top")
-      .card-body
-        h5= post.title
-        p= post.author
+  .album.py-5
+    .row
+      each post in posts
+        .col-md-4
+          a(href=`/posts/${post.id}` class="card mb-4 box-shadow" )
+            img(src=post.imageUrl, alt="http://placekitten.com/g/128/192" class="card-img-top")
+            .card-body
+              h5= post.title
+              p=post.author
+              p= post.description
+              .d-flex.justify-content-between.align-items-center
+                .btn-group
+                  button.btn.btn-sm.btn-success Save
+                  button.btn.btn-sm.btn-secondary Comment
+                  button.btn.btn-success.btn-sm
+                    i.fas.fa-share
+                  -let date=post.publishedDate
+                small.text-muted=date
 
   if !posts.length
     p No posts found.

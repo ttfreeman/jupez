@@ -3,7 +3,9 @@
 const { Datastore } = require("@google-cloud/datastore");
 
 // [START config]
-const ds = new Datastore();
+const ds = new Datastore({
+  project_id: "jupez-ttfreeman"
+});
 const kind = "Post";
 // [END config]
 
@@ -58,6 +60,8 @@ function update(id, data, cb) {
 // [END update]
 
 function create(data, cb) {
+  console.log(data);
+
   update(null, data, cb);
 }
 

@@ -12,14 +12,14 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 app.set("trust proxy", true);
 
-// posts
-app.use("/posts", require("./posts/crud"));
-app.use("/api/posts", require("./posts/api"));
-
 // Redirect root to /posts
 app.get("/", (req, res) => {
   res.redirect("/posts");
 });
+
+// posts
+app.use("/posts", require("./posts/crud"));
+app.use("/api/posts", require("./posts/api"));
 
 // Basic 404 handler
 app.use((req, res) => {

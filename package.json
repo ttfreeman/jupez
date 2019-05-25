@@ -24,7 +24,7 @@
   },
   "scripts": {
     "start": "node app.js",
-    "test": "",
+    "test": "ava --watch",
     "dev": "nodemon app.js"
   },
   "dependencies": {
@@ -39,12 +39,11 @@
     "npm-check-updates": "^3.1.9",
     "prompt": "^1.0.0",
     "pug": "^2.0.3",
+    "request": "^2.88.0",
     "uglify-js": "^3.5.13"
   },
   "devDependencies": {
-    "@google-cloud/nodejs-repo-tools": "^3.0.0",
-    "ava": "^0.25.0",
-    "proxyquire": "^2.1.0",
-    "sinon": "^7.0.0"
+    "@google-cloud/nodejs-repo-tools": "^3.3.0",
+    "ava": "^1.4.1"
   }
 }

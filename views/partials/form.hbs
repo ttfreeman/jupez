@@ -1,0 +1,39 @@
+
+<h3>{{action}} post</h3>
+
+<form method="POST" enctype="multipart/form-data">
+
+  <div class="form-group">
+    <label for="title">Title</label>
+    <input type="text" name="title" id="title" value="{{post.data.title}}" class="form-control"/>
+  </div>
+
+  <div class="form-group">
+    <label for="author">Author</label>
+    <input type="text" name="author" id="author" value="{{post.data.author}}" class="form-control"/>
+  </div>
+
+  <div class="form-group">
+    <label for="publishedDate">Date Published</label>
+    <input type="text" name="publishedDate" id="publishedDate" value="{{post.data.publishedDate}}" class="form-control"/>
+  </div>
+
+  <div class="form-group">
+    <label for="description">Description</label>
+    <textarea name="description" id="description" class="form-control">{{post.data.description}}</textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="image">Cover Image</label>
+    <input type="file" name="image" id="image" class="form-control"/>
+  </div>
+
+  <div class="form-group d-none">
+    <label for="imageUrl">Cover Image URL</label>
+    <input type="text" name="imageUrl" id="imageUrl" value="{{post.data.imageUrl}}" class="form-control"/>
+  </div>
+
+  <button type="submit" class="btn btn-success">Save</button>
+  <a class="btn btn-secondary m-1" href="javascript:history.back()">Cancel</a>
+</form>
+

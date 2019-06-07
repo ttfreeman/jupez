@@ -1,0 +1,15 @@
+<html lang="en">
+  {{>head}}
+  <body>
+    {{>nav}}
+    <div class="container">
+       {{#if form}}
+        {{>form}}
+        {{else if list}}
+        {{>list posts=posts nextPageToken=nextPageToken}}
+        {{else if view}}
+        {{>view post=post}}
+        {{/if}}
+    </div>
+  </body>
+</html>

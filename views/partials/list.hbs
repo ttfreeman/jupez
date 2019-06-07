@@ -1,0 +1,46 @@
+
+<h3>posts</h3>
+<a href="/posts/add" class="btn btn-success btn-sm">
+  <i class="fas fa-plus"></i>
+  Add post
+</a>
+<div class="album py-5">
+  <div class="row">
+    {{#each posts}}
+    <div class="col-md-4">
+      <a href="/posts/{{this.id}}" class="card mb-4 box-shadow">
+        {{#if this.data.imageUrl}}
+        <img src="{{this.data.imageUrl}}" class="card-img-top">
+        {{else}}
+        <img src="http://placekitten.com/g/128/192" class="card-img-top">
+        {{/if}}
+        <div class="card-body">
+          <h4>{{this.data.title}}</h4>
+          <p>{{this.data.author}}</p>
+          <p>{{this.data.description}}</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="btn-group"> 
+              <button class="btn btn-info btn-sm">Save</button>
+              <button class="btn btn-success btn-sm"><i class="fas fa-share"></i></button>
+            </div>
+          </div>
+          <small class="text-muted">{{this.data.publishedDate}}</small>
+        </div>
+      </a>
+    </div>
+    {{else}}
+    <p>No posts found</p>
+    {{/each}}
+  </div>
+</div>
+
+
+{{#if nextPageToken}}
+<nav>
+  <ul class="pagination">
+    <li class="page-item"><a href="?pageToken={{nextPageToken}}">More</a></li>
+  </ul>
+</nav>
+{{/if}}
+
+

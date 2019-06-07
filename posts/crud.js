@@ -2,7 +2,7 @@
 
 const express = require("express");
 const bodyParser = require("body-parser");
-const model = require("./model-datastore");
+const model = require("./model-firestore");
 const images = require("../lib/images");
 
 const router = express.Router();
@@ -21,17 +21,14 @@ router.use((req, res, next) => {
  *
  * Display a page of posts (up to ten at a time).
  */
-router.get("/", (req, res, next) => {
-  model.list(10, req.query.pageToken, (err, entities, cursor) => {
-    if (err) {
-      next(err);
-      return;
-    }
-    res.render("posts/list.pug", {
-      posts: entities,
-      nextPageToken: cursor
+router.get("/", async (req, res) => {
+  const posts = await model.list(10, req.query.pageToken) 
+    
+    res.render("index", {
+      list: 'list',
+      posts: posts,
+      // nextPageToken: cursor
     });
-  });
 });
 
 /**
@@ -41,7 +38,8 @@ router.get("/", (req, res, next) => {
  */
 // [START add_get]
 router.get("/add", (req, res) => {
-  res.render("posts/form.pug", {
+  res.render("index", {
+    form: 'form',
     post: {},
     action: "Add"
   });
@@ -58,7 +56,7 @@ router.post(
   "/add",
   images.multer.single("image"),
   images.sendUploadToGCS,
-  (req, res, next) => {
+  async (req, res) => {
     const data = req.body;
     // Was an image uploaded? If so, we'll use its public URL
     // in cloud storage.
@@ -67,14 +65,9 @@ router.post(
     }
 
     // Save the data to the database.
-    model.create(data, (err, savedData) => {
-      if (err) {
-        next(err);
-        return;
-      }
+    const ref = await model.create(data)
 
-      res.redirect(`${req.baseUrl}/${savedData.id}`);
-    });
+    res.redirect(`${req.baseUrl}/${ref.id}`);
   }
 );
 // [END add_post]
@@ -84,16 +77,12 @@ router.post(
  *
  * Display a post for editing.
  */
-router.get("/:post/edit", (req, res, next) => {
-  model.read(req.params.post, (err, entity) => {
-    if (err) {
-      next(err);
-      return;
-    }
-    res.render("posts/form.pug", {
-      post: entity,
+router.get("/:post/edit", async (req, res) => {
+  const post = await model.read(req.params.post)
+  res.render("index", {
+      form: 'form',
+      post: post,
       action: "Edit"
-    });
   });
 });
 
@@ -106,7 +95,7 @@ router.post(
   "/:post/edit",
   images.multer.single("image"),
   images.sendUploadToGCS,
-  (req, res, next) => {
+  async (req, res) => {
     const data = req.body;
 
     // Was an image uploaded? If so, we'll use its public URL
@@ -115,13 +104,8 @@ router.post(
       req.body.imageUrl = req.file.cloudStoragePublicUrl;
     }
 
-    model.update(req.params.post, data, (err, savedData) => {
-      if (err) {
-        next(err);
-        return;
-      }
-      res.redirect(`${req.baseUrl}/${savedData.id}`);
-    });
+    const ref = await model.update(req.params.post, data)
+    res.redirect(`${req.baseUrl}/${ref.id}`);
   }
 );
 
@@ -130,15 +114,12 @@ router.post(
  *
  * Display a post.
  */
-router.get("/:post", (req, res, next) => {
-  model.read(req.params.post, (err, entity) => {
-    if (err) {
-      next(err);
-      return;
-    }
-    res.render("posts/view.pug", {
-      post: entity
-    });
+router.get("/:post", async (req, res) => {
+  const post = await model.read(req.params.post) 
+  
+  res.render("index", {
+      view: 'view',
+      post: post
   });
 });
 
@@ -147,24 +128,9 @@ router.get("/:post", (req, res, next) => {
  *
  * Delete a post.
  */
-router.get("/:post/delete", (req, res, next) => {
-  model.delete(req.params.post, err => {
-    if (err) {
-      next(err);
-      return;
-    }
-    res.redirect(req.baseUrl);
-  });
-});
-
-/**
- * Errors on "/posts/*" routes.
- */
-router.use((err, req, res, next) => {
-  // Format error and forward to generic error handler for logging and
-  // responding to the request
-  err.response = err.message;
-  next(err);
+router.get("/:post/delete", async (req, res, next) => {
+  await model.delete(req.params.post)
+  res.redirect(req.baseUrl);
 });
 
 module.exports = router;

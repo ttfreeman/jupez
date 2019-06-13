@@ -117,6 +117,7 @@ router.post(
 router.get("/:post", async (req, res) => {
   const post = await model.read(req.params.post) 
   
+  await model.findRead(post.data.symbol)
   res.render("index", {
       view: 'view',
       post: post

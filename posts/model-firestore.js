@@ -5,7 +5,7 @@ const keys = require('../config/keys')
 
 // [START config]
 const firestore = new Firestore();
-const collectionApi = "Post";
+const collectionApi = "posts";
 const db = firestore.collection(collectionApi)
 // [END config]
 
@@ -17,7 +17,7 @@ async function list(limit, token) {
   
   const q = db
     .limit(limit)
-    .orderBy("title")
+    .orderBy("symbol")
     .startAt(token);
 
   
@@ -66,10 +66,29 @@ function _delete(id) {
   db.doc(id).delete();
 }
 
+function findRead(symbol){
+  var optionsRef = firestore.collection('jupez-scrape-analysis')
+  var query = optionsRef.where('symbol', '==', symbol).get()
+    .then(snapshot => {
+      if (snapshot.empty) {
+        console.log('No matching documents.');
+        return;
+      }
+
+      snapshot.forEach(doc => {
+        console.log(doc.id, '=>', doc.data());
+      });
+    })
+    .catch(err => {
+      console.log('Error getting documents', err);
+    });  
+}
+
 module.exports = {
   create,
   read,
   update,
   delete: _delete,
-  list
+  list,
+  findRead
 };

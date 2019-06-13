@@ -28,15 +28,14 @@ app.get("/scrape", (req, res) => {
 // Scraper
 app.post("/scrape", (req, res) => {
   const data= req.body
-  
-  const url = data.url || "https://cloud.google.com/docs/tutorials"
-  scrape(url);
+  const symbol = 'xle'
+  const url = data.url || "https://www.nasdaq.com/symbol/"
+  scrape(url,symbol);
   res.redirect(`/scrape`);
 });
 
 // posts
 app.use("/posts", require("./posts/crud"));
-app.use("/api/posts", require("./posts/api"));
 
 // Basic 404 handler
 app.use((req, res) => {
